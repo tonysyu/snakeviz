@@ -88,7 +88,7 @@ class VizHandler(handler.Handler):
                 pass
         else:
             filename = upload.storage_name(profile_name)
-            json_path = '/json/%s.json' % filename
+            profile_json = upload.stats_to_json(filename)
 
         rows = stats_rows(filename)
 

@@ -17,7 +17,7 @@ settings = {
 #             (r'/viz/(.*)', 'snakeviz.viz.VizHandler')]
 
 # set of handlers for offline, single user mode
-handlers = [(r'/json/file/(.*)\.json', 'snakeviz.upload.JSONHandler'),
+handlers = [(r'/json/file/(.*)\.json', 'snakeviz.upload.StatsHandler'),
             (r'/viz/file/(.*)', 'snakeviz.viz.VizHandler')]
 
 app = tornado.web.Application(handlers, **settings)
