@@ -35,10 +35,10 @@ var arc = d3.svg.arc()
     .outerRadius(function(d) { return Math.max(0, y(d.y + d.dy)); });
 
 var drawSunburst = function drawSunburst(json) {
-  sunburstJSON = json;
+  profile_tree = stats_to_tree(json);
   // remove loading bar
   d3.select('#loadingdiv').remove();
-  var path = vis.data([json]).selectAll("path").data(partition.nodes);
+  var path = vis.data([profile_tree]).selectAll("path").data(partition.nodes);
   path.enter().append("path")
       .attr("id", function(d, i) { return "path-" + i; })
       .attr("d", arc)
@@ -62,7 +62,7 @@ var drawSunburst = function drawSunburst(json) {
   }
 };
 
-var JSONErrorCallback = function JSONCallback() {
+var JSONErrorCallback = function JSONErrorCallback() {
   //remove reset button, loading bar, and svg
   d3.select('#resetbutton').remove();
   d3.select('#loadingdiv').remove();
@@ -109,7 +109,7 @@ var resetViz = function resetViz() {
   var path = vis.selectAll("path");
   path.transition()
       .duration(duration)
-      .attrTween("d", arcTween(sunburstJSON));
+      .attrTween("d", arcTween(profile_tree));
   d3.select('#resetbutton').property('disabled', 'True');
 };
 d3.select('#resetbutton').on('click', resetViz);
