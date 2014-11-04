@@ -7,7 +7,7 @@ python:
 install:
   - pip install tornado
   - pip install jinja2
-  - pip install yaml
+  - pip install pyyaml
   - python setup.py install
 # command to run tests
 script:
