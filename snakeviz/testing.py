@@ -15,12 +15,12 @@ def temp_file(suffix='', prefix='tmp', dir=None):
         yield filename
     finally:
         os.close(fd)
-        os.unlink(filename)
+        os.remove(filename)
 
 
 @contextmanager
 def temp_pstats_tree(command_str, locals_dict=None):
-    """Yield temporary `PStatsNode` with representing the root of the call graph.
+    """Yield temporary `PStatsNode` representing the root of the call graph.
 
     Parameters
     ----------
@@ -36,12 +36,9 @@ def temp_pstats_tree(command_str, locals_dict=None):
         profiler.dump_stats(filename)
 
         tree = PStatsLoader(filename).tree
-        # XXX: For some reason, the first child is always to sys.setprofile.
-        profiler_tree = tree.children[0]
-        assert profiler_tree.name == 'setprofile'
-
-        # The second child is what actually runs the command string.
-        yield tree.children[1]
+        for node in tree.children:
+            if node.name != 'setprofile':
+                yield node
 
 
 def node_name(graph):

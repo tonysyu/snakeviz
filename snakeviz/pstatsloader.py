@@ -54,6 +54,7 @@ def raw_stats_to_nodes(stats):
             nodes[func] = PStatsNode(func, raw_timing)
         except ValueError:
             log.info('Null row: %s', func)
+            log.info('Timing: {}'.format(raw_timing))
 
     for row in nodes.values():
         row.weave(nodes)
