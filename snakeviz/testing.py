@@ -43,12 +43,12 @@ def temp_pstats_tree(command_str, locals_dict=None):
 
 def node_name(graph):
     assert len(graph) == 1
-    return graph.keys()[0]
+    return list(graph.keys())[0]
 
 
 def get_children(graph):
     assert len(graph) == 1
-    return graph.values()[0]
+    return list(graph.values())[0]
 
 
 def is_leaf(node):
