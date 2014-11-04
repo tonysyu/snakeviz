@@ -55,11 +55,11 @@ def get_children(graph):
 
 
 def is_leaf(node):
-    return isinstance(node, basestring)
+    return not has_children(node)
 
 
 def has_children(node):
-    return not is_leaf(node)
+    return hasattr(node, 'keys')
 
 
 def get_barren_children(graph):
