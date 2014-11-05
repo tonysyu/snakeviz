@@ -44,6 +44,8 @@ def test_call_graph():
     """)
 
     with temp_pstats_tree('simple_func()', locals(), 'simple_func') as root:
+        print(root)
+        print(root.children)
         graph = ensure_call_graph(root)
         print(graph)
         assert_call_graphs_match(graph, expected_graph)
