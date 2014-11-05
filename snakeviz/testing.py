@@ -2,6 +2,10 @@ import os
 import profile
 import tempfile
 from contextlib import contextmanager
+try:
+    import Queue as queue
+except ImportError:
+    import queue
 
 from nose.tools import assert_equal
 
@@ -18,8 +22,23 @@ def temp_file(suffix='', prefix='tmp', dir=None):
         os.remove(filename)
 
 
+def find_node(root, name, _nodes=None):
+    """Return node with given name based on breadth-first search."""
+    _nodes = _nodes if _nodes is not None else queue.Queue()
+
+    if root.name == name:
+        return root
+    else:
+        for child in root.children:
+            _nodes.put(child)
+        if _nodes.qsize() == 0:
+            return None
+
+        return find_node(_nodes.get(), name, _nodes=_nodes)
+
+
 @contextmanager
-def temp_pstats_tree(command_str, locals_dict=None):
+def temp_pstats_tree(command_str, locals_dict=None, root_name=None):
     """Yield temporary `PStatsNode` representing the root of the call graph.
 
     Parameters
@@ -36,9 +55,10 @@ def temp_pstats_tree(command_str, locals_dict=None):
         profiler.dump_stats(filename)
 
         tree = PStatsLoader(filename).tree
-        for node in tree.children:
-            if node.name != 'setprofile':
-                yield node
+        if root_name is None:
+            yield tree
+        else:
+            yield find_node(tree, root_name)
 
 
 def node_name(graph):
