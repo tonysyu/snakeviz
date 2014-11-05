@@ -83,7 +83,7 @@ def get_barren_children(graph):
     """Return sorted list of children that have no offspring."""
     # XXX: Add node-name check to debug Travis issue.
     return sorted(c for c in get_children(graph)
-                  if is_leaf(c) and node_name(graph) != c)
+                  if is_leaf(c))
 
 
 def get_fertile_children(graph):

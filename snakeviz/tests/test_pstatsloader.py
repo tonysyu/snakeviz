@@ -43,6 +43,8 @@ def test_call_graph():
                 - len
     """)
 
+    print(locals())
+
     with temp_pstats_tree('simple_func()', locals(), 'simple_func') as root:
         print(root)
         print(root.children)
