@@ -16,10 +16,6 @@ def ptree_to_call_graph(tree):
         return tree.name
 
 
-def ptree_to_yaml(tree):
-    return yaml.dump(ptree_to_call_graph(tree))
-
-
 def ensure_call_graph(graph):
     """Ensure that we have a simple call graph dictionary.
 
@@ -49,4 +45,5 @@ def test_call_graph():
 
     with temp_pstats_tree('simple_func()', locals(), 'simple_func') as root:
         graph = ensure_call_graph(root)
+        print(graph)
         assert_call_graphs_match(graph, expected_graph)
