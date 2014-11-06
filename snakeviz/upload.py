@@ -224,6 +224,8 @@ def stats_to_tree_dict(node, parent=None, parent_size=None,
                                                 _i_depth=depth)
                 d['children'].append(child_dict)
 
+        print('\t', [c['name'] for c in d['children']])
+
         if d['children']:
             # make a "child" that represents the internal time of this function
             children_sum = sum(c['size'] for c in d['children'])
