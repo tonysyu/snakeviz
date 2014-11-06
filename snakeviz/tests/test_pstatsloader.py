@@ -51,3 +51,5 @@ def test_call_graph():
         graph = ensure_call_graph(root)
         print(graph)
         assert_call_graphs_match(graph, expected_graph)
+
+        assert 0

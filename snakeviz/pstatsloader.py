@@ -83,6 +83,7 @@ class PStatsLoader(object):
     def __init__(self, *filenames):
         self.filename = filenames
         self.stats = pstats.Stats(*filenames)
+        print(self.stats.stats)
         self.nodes = raw_stats_to_nodes(self.stats.stats)
         self.tree = self._find_root(self.nodes)
         self.forest = self._find_forest(self.nodes, self.tree)

@@ -49,3 +49,5 @@ def test_stats_to_tree_dict():
 
         graph = ptree_to_call_graph(root, max_depth=2)
         assert_call_graphs_match(graph, {'simple_func': ['len', 'sub_func']})
+
+        assert 0

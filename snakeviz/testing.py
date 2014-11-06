@@ -54,6 +54,9 @@ def temp_pstats_tree(command_str, locals_dict=None, root_name=None):
     with temp_file() as filename:
         profiler.dump_stats(filename)
 
+        with open(filename) as f:
+            print(len(f.readlines()))
+
         tree = PStatsLoader(filename).tree
         if root_name is None:
             yield tree
