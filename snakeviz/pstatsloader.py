@@ -93,15 +93,8 @@ class PStatsLoader(object):
     def __init__(self, filename, filter_names=None):
         self.filename = filename
         self.stats = pstats.Stats(filename)
-        print("STATS")
-        for func, timings in self.stats.stats.items():
-            print(func[-1], timings[-1])
         self.nodes = raw_stats_to_nodes(self.stats.stats,
                                         filter_names=filter_names)
-        print()
-        print("NODES")
-        for func, node in self.nodes.items():
-            print(func[-1], [c.name for c in node.children])
         self.tree = self._find_root(self.nodes)
         self.forest = self._find_forest(self.nodes, self.tree)
 
@@ -124,11 +117,10 @@ class PStatsLoader(object):
     def _find_forest(nodes, root):
         forest = [root]
 
-        for key, value in nodes.items():
-            if not value.parents:
-                log.debug('Found node root: %s', value)
-                if value not in forest:
-                    forest.append(value)
+        for stats_node in nodes.values():
+            if not stats_node.parents and stats_node not in forest:
+                log.debug('Found node root: %s', stats_node.name)
+                forest.append(stats_node)
         return forest
 
 
@@ -172,7 +164,9 @@ class PStatsNode(object):
         return simple_repr(self, attrs)
 
     def weave(self, nodes):
+        print(self.name)
         for caller in self._callers.keys():
+            print('\t', caller[-1])
             parent = nodes.get(caller)
             if parent:
                 self.parents.append(parent)

@@ -4,6 +4,7 @@ request URL. In the standalone, command line version the upload handler
 is not used.
 
 """
+from __future__ import print_function
 
 import pstats
 import json
@@ -213,7 +214,9 @@ def stats_to_tree_dict(node, parent=None, parent_size=None,
     if node.children:
         depth = _i_depth + 1
         d['children'] = []
+        print(node.name)
         for child in node.children:
+            print('\t', child.name)
             if child not in recursive_seen and depth < max_depth:
                 child_dict = stats_to_tree_dict(child, node, d['size'],
                                                 recursive_seen,
