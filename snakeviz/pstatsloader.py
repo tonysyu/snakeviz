@@ -95,7 +95,9 @@ class PStatsLoader(object):
         self.stats = pstats.Stats(filename)
         self.nodes = raw_stats_to_nodes(self.stats.stats,
                                         filter_names=filter_names)
-        print(self.nodes.keys())
+        from pprint import pprint as pp
+        pp(self.nodes.keys())
+        pp(self.nodes.values())
         self.tree = self._find_root(self.nodes)
         self.forest = self._find_forest(self.nodes, self.tree)
 

@@ -46,5 +46,3 @@ def test_call_graph():
     with temp_pstats_tree('simple_func()', locals(), 'simple_func') as root:
         graph = ensure_call_graph(root)
         assert_call_graphs_match(graph, expected_graph)
-
-        assert 0
