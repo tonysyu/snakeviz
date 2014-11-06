@@ -93,12 +93,12 @@ class PStatsLoader(object):
     def __init__(self, filename, filter_names=None):
         self.filename = filename
         self.stats = pstats.Stats(filename)
-        from pprint import pprint as pp
-        pp(self.stats.stats)
+        for func, children in self.stats.stats.items():
+            print(func[-1], [c.name for c in children])
         self.nodes = raw_stats_to_nodes(self.stats.stats,
                                         filter_names=filter_names)
-        pp([k[-1] for k in self.nodes.keys()])
-        pp([n.children.name for n in self.nodes.values()])
+        for func, children in self.nodes.items():
+            print(func[-1], [c.name for c in children])
         self.tree = self._find_root(self.nodes)
         self.forest = self._find_forest(self.nodes, self.tree)
 
