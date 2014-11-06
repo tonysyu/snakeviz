@@ -236,6 +236,7 @@ def stats_to_tree_dict(node, parent=None, parent_size=None,
                 d_internal = node_attrs(node)
                 d_internal['size'] = d['size'] - children_sum
                 d['children'].append(d_internal)
+            print('\t', [c['name'] for c in d['children']])
         else:
             # there were no non-recursive children so get rid of the
             # children list.
