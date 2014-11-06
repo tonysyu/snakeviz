@@ -41,7 +41,6 @@ def test_stats_to_tree_dict():
             - sub_func:
                 - len
     """)
-    print(locals())
 
     with temp_pstats_tree('simple_func()', locals(), 'simple_func') as root:
         graph = ptree_to_call_graph(root)
