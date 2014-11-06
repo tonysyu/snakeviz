@@ -97,8 +97,8 @@ class PStatsLoader(object):
         pp(self.stats.stats)
         self.nodes = raw_stats_to_nodes(self.stats.stats,
                                         filter_names=filter_names)
-        pp(self.nodes.keys())
-        pp([n.children for n in self.nodes.values()])
+        pp([k[-1] for k in self.nodes.keys()])
+        pp([n.children.name for n in self.nodes.values()])
         self.tree = self._find_root(self.nodes)
         self.forest = self._find_forest(self.nodes, self.tree)
 
@@ -136,10 +136,10 @@ class PStatsNode(object):
         self.children = []
         self.parents = []
 
-        fname, line, func = self.caller = caller
+        filename, line, func = self._func_key = caller
         try:
-            dirname = os.path.dirname(fname)
-            fname = os.path.basename(fname)
+            dirname = os.path.dirname(filename)
+            filename = os.path.basename(filename)
         except ValueError:
             dirname = ''
 
@@ -155,7 +155,7 @@ class PStatsNode(object):
         self.t_cumulative = ct
         self.t_cumulative_per_call = ct/max(nc, EPS)
         self.directory = dirname
-        self.filename = fname
+        self.filename = filename
         self.name = func
         self.lineno = line
         self._callers = callers
@@ -179,8 +179,8 @@ class PStatsNode(object):
         total = self.t_cumulative
         if total:
             try:
-                (cc, nc, tt, ct) = child._callers[self.caller]
+                (cc, nc, tt, ct) = child._callers[self._func_key]
             except TypeError:
-                ct = child._callers[self.caller]
+                ct = child._callers[self._func_key]
             return float(ct)/total
         return 0
