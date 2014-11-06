@@ -39,7 +39,7 @@ def simple_repr(obj, attrs):
     return '{}({})'.format(cname(obj), kwargs)
 
 
-def raw_stats_to_nodes(stats):
+def raw_stats_to_nodes(stats, filter_names=None):
     """ Convert a dictionary of timing stats to dictionary of PStatsNodes.
 
     Parameters
@@ -48,10 +48,13 @@ def raw_stats_to_nodes(stats):
         Dictionary mapping functions (file, line, name) to profile timings.
         Typically, this will just be `pstats.Stats.stats`.
     """
+    filter_names = [] if filter_names is None else filter_names
+
     nodes = {}
     for func, raw_timing in stats.items():
         try:
-            nodes[func] = PStatsNode(func, raw_timing)
+            if func[-1] not in filter_names:
+                nodes[func] = PStatsNode(func, raw_timing)
         except ValueError:
             log.info('Null row: %s', func)
             log.info('Timing: {}'.format(raw_timing))
@@ -69,6 +72,13 @@ class PStatsLoader(object):
 
         (module-path, line-number, function-name)
 
+    Parameters
+    ----------
+    filename : str
+        Profile output from `Profiler.dump_stats(filename)`.
+    filter_names : list of str
+        Names of functions to filter out of profile output.
+
     Attributes
     ----------
     nodes : dict
@@ -80,15 +90,13 @@ class PStatsLoader(object):
         The list of all profiler statistics trees.
     """
 
-    def __init__(self, *filenames):
-        self.filename = filenames
-        self.stats = pstats.Stats(*filenames)
-        from pprint import pprint as pp
-        pp(self.stats.stats.keys())
-        self.nodes = raw_stats_to_nodes(self.stats.stats)
-        pp(self.nodes.keys())
+    def __init__(self, filename, filter_names=None):
+        self.filename = filename
+        self.stats = pstats.Stats(filename)
+        self.nodes = raw_stats_to_nodes(self.stats.stats,
+                                        filter_names=filter_names)
+        print(self.nodes.keys())
         self.tree = self._find_root(self.nodes)
-        pp(self.tree)
         self.forest = self._find_forest(self.nodes, self.tree)
 
     @staticmethod

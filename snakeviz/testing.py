@@ -38,7 +38,8 @@ def find_node(root, name, _nodes=None):
 
 
 @contextmanager
-def temp_pstats_tree(command_str, locals_dict=None, root_name=None):
+def temp_pstats_tree(command_str, locals_dict=None, root_name=None,
+                     filter_names='default'):
     """Yield temporary `PStatsNode` representing the root of the call graph.
 
     Parameters
@@ -48,13 +49,16 @@ def temp_pstats_tree(command_str, locals_dict=None, root_name=None):
     locals_dict : dict
         Dictionary of local variables for command execution.
     """
+    if filter_names == 'default':
+        filter_names = ['setprofile']
+
     profiler = profile.Profile()
     profiler.runctx(command_str, globals(), locals_dict)
 
     with temp_file() as filename:
         profiler.dump_stats(filename)
 
-        tree = PStatsLoader(filename).tree
+        tree = PStatsLoader(filename, filter_names=filter_names).tree
         if root_name is None:
             yield tree
         else:
