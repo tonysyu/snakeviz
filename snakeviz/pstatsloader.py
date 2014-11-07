@@ -59,6 +59,7 @@ def raw_stats_to_nodes(stats, filter_names=None):
             log.info('Null row: %s', func)
             log.info('Timing: {}'.format(raw_timing))
 
+    print([n.name for n in nodes.values()])
     for row in nodes.values():
         row.weave(nodes)
     return nodes
