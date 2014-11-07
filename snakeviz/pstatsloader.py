@@ -59,8 +59,9 @@ def raw_stats_to_nodes(stats, filter_names=None):
             log.info('Null row: %s', func)
             log.info('Timing: {}'.format(raw_timing))
 
-    print([(k[-1], v) for (k, v) in stats.items()
-           if k[-1] == 'sub_func'])
+    from pprint import pprint as pp
+    pp([(k[-1], v) for (k, v) in stats.items()
+           if k[-1] in ('sub_func', 'simple_func')])
 
     print([n.name for n in nodes.values()])
     for row in nodes.values():
