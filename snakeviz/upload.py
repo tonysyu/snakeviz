@@ -214,7 +214,7 @@ def stats_to_tree_dict(node, parent=None, parent_size=None,
     if node.children:
         depth = _i_depth + 1
         d['children'] = []
-        print(node.name)
+        # print(node.name)
 
         for child in node.children:
             print('\t', child.name)
@@ -225,7 +225,7 @@ def stats_to_tree_dict(node, parent=None, parent_size=None,
                                                 _i_depth=depth)
                 d['children'].append(child_dict)
 
-        print('\t', node.name, [c['name'] for c in d['children']])
+        # print('\t', node.name, [c['name'] for c in d['children']])
 
         if d['children']:
             # make a "child" that represents the internal time of this function
@@ -239,12 +239,12 @@ def stats_to_tree_dict(node, parent=None, parent_size=None,
                 d_internal = node_attrs(node)
                 d_internal['size'] = d['size'] - children_sum
                 d['children'].append(d_internal)
-                print('\t', node.name, [c['name'] for c in d['children']])
+                # print('\t', node.name, [c['name'] for c in d['children']])
         else:
             # there were no non-recursive children so get rid of the
             # children list.
             del d['children']
-        print('-----')
+        # print('-----')
 
     if node in recursive_seen:
         # remove this node from the set so it doesn't interfere if this
