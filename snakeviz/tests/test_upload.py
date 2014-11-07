@@ -43,10 +43,8 @@ def test_stats_to_tree_dict():
     """)
 
     with temp_pstats_tree('simple_func()', locals(), 'simple_func') as root:
-        print('-'*80)
         graph = ptree_to_call_graph(root)
         assert_call_graphs_match(graph, expected_graph)
 
         graph = ptree_to_call_graph(root, max_depth=2)
         assert_call_graphs_match(graph, {'simple_func': ['len', 'sub_func']})
-        assert 0
