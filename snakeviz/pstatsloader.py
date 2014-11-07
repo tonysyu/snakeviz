@@ -59,8 +59,12 @@ def raw_stats_to_nodes(stats, filter_names=None):
             log.info('Null row: %s', func)
             log.info('Timing: {}'.format(raw_timing))
 
+    print([(k[-1], v) for (k, v) in stats.items()
+           if k[-1] == 'sub_func'])
+
     print([n.name for n in nodes.values()])
     for row in nodes.values():
+        print('row:', row.name)
         row.weave(nodes)
     return nodes
 
@@ -165,7 +169,7 @@ class PStatsNode(object):
         return simple_repr(self, attrs)
 
     def weave(self, nodes):
-        print(self.name)
+        print('weave', self.name)
         for caller in self._callers.keys():
             print('\t', caller[-1])
             parent = nodes.get(caller)
